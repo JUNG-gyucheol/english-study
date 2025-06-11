@@ -9,31 +9,29 @@ export default function Home() {
 
   useEffect(() => {
     // 카메라 접근
-    const getCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        })
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream
-        }
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          alert('카메라 접근 실패: ' + err.message)
-        }
-      }
-    }
-
-    getCamera()
-
-    return () => {
-      // 컴포넌트 unmount 시 스트림 정리
-      if (videoRef.current && videoRef.current.srcObject) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        const tracks = (videoRef.current.srcObject as MediaStream).getTracks()
-        tracks.forEach((track: MediaStreamTrack) => track.stop())
-      }
-    }
+    // const getCamera = async () => {
+    //   try {
+    //     const stream = await navigator.mediaDevices.getUserMedia({
+    //       video: true,
+    //     })
+    //     if (videoRef.current) {
+    //       videoRef.current.srcObject = stream
+    //     }
+    //   } catch (err: unknown) {
+    //     if (err instanceof Error) {
+    //       alert('카메라 접근 실패: ' + err.message)
+    //     }
+    //   }
+    // }
+    // getCamera()
+    // return () => {
+    //   // 컴포넌트 unmount 시 스트림 정리
+    //   if (videoRef.current && videoRef.current.srcObject) {
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    //     const tracks = (videoRef.current.srcObject as MediaStream).getTracks()
+    //     tracks.forEach((track: MediaStreamTrack) => track.stop())
+    //   }
+    // }
   }, [])
 
   const takePhoto = () => {
