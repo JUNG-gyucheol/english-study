@@ -1,40 +1,48 @@
 'use client'
 
-import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import { useRef, useState } from 'react'
+
+async function uploadImage() {
+  // const filePath = `uploads/${Date.now()}_${file.name}`
+
+  const { data: bucketData, error: bucketError } =
+    await supabase.storage.createBucket('photos')
+  console.log(bucketData, bucketError)
+
+  // const { error } = await supabase.storage
+  //   .from('photos')
+  //   .upload(filePath, file, {
+  //     cacheControl: '3600',
+  //     upsert: false,
+  //   })
+
+  // console.log('upload', error)
+
+  // if (error) {
+  //   console.error('업로드 에러:', error)
+  //   return null
+  // }
+
+  // public URL 가져오기
+  // const { data: publicUrlData } = supabase.storage
+  //   .from('photos')
+  //   .getPublicUrl(filePath)
+  const { data: publicUrlData } = await supabase.storage
+    .from('photos')
+    .createSignedUrl('uploads/e.jpg', 60)
+
+  console.log(publicUrlData)
+  return publicUrlData?.signedUrl
+  // return publicUrlData.publicUrl // 이미지 URL 반환
+}
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [photo, setPhoto] = useState<string>()
+  const [, setPhoto] = useState<string>()
+  const [data, setData] = useState<{ [key: string]: string }>()
 
-  useEffect(() => {
-    // 카메라 접근
-    // const getCamera = async () => {
-    //   try {
-    //     const stream = await navigator.mediaDevices.getUserMedia({
-    //       video: true,
-    //     })
-    //     if (videoRef.current) {
-    //       videoRef.current.srcObject = stream
-    //     }
-    //   } catch (err: unknown) {
-    //     if (err instanceof Error) {
-    //       alert('카메라 접근 실패: ' + err.message)
-    //     }
-    //   }
-    // }
-    // getCamera()
-    // return () => {
-    //   // 컴포넌트 unmount 시 스트림 정리
-    //   if (videoRef.current && videoRef.current.srcObject) {
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    //     const tracks = (videoRef.current.srcObject as MediaStream).getTracks()
-    //     tracks.forEach((track: MediaStreamTrack) => track.stop())
-    //   }
-    // }
-  }, [])
-
-  const takePhoto = () => {
+  const takePhoto = async () => {
     const canvas = document.createElement('canvas')
     const video = videoRef.current
     if (!video) return
@@ -45,8 +53,54 @@ export default function Home() {
     const ctx = canvas.getContext('2d')
     ctx?.drawImage(video, 0, 0)
 
-    const imageDataUrl = canvas.toDataURL('image/png')
-    setPhoto(imageDataUrl)
+    // Canvas를 blob으로 변환
+    const blob = await new Promise<Blob>((resolve) => {
+      canvas.toBlob((blob) => {
+        resolve(blob as Blob)
+      }, 'image/png')
+    })
+
+    // Blob으로부터 File 객체 생성
+    // const file = new File([blob], 'photo.png', {
+    //   type: 'image/png',
+    // })
+
+    const imageUrl = URL.createObjectURL(blob)
+    setPhoto(imageUrl)
+
+    // 파일 업로드 호출
+    const uploadedUrl = await uploadImage()
+    console.log('Uploaded URL:', uploadedUrl)
+
+    if (uploadedUrl) {
+      fetch('/api/word', {
+        method: 'POST',
+        body: JSON.stringify({ image: uploadedUrl }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          const parsedData = JSON.parse(data)
+          console.log(parsedData)
+          setData(parsedData)
+        })
+    }
+
+    // // 메모리 정리
+    URL.revokeObjectURL(imageUrl)
+  }
+
+  const createExample = (word: string) => {
+    fetch('/api/example', {
+      method: 'POST',
+      body: JSON.stringify({ word }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        const parsedData = JSON.parse(data)
+        console.log(parsedData)
+      })
   }
 
   return (
@@ -59,9 +113,9 @@ export default function Home() {
         style={{ maxWidth: 400 }}
       />
       <br />
-      <button onClick={takePhoto}>📸 사진 찍기</button>
+      <button>Test</button>
       <br />
-      {photo && (
+      {/* {photo && (
         <Image
           src={photo}
           alt="캡처 이미지"
@@ -69,6 +123,15 @@ export default function Home() {
           width={400}
           height={400}
         />
+      )} */}
+      {data && (
+        <div>
+          {Object.entries(data).map(([key, value]) => (
+            <div key={key} onClick={() => createExample(key)}>
+              {key}: {value}
+            </div>
+          ))}
+        </div>
       )}
     </div>
   )
