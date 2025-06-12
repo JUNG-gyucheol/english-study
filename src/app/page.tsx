@@ -113,7 +113,7 @@ export default function Home() {
         style={{ maxWidth: 400 }}
       />
       <br />
-      <button>Test</button>
+      <button onClick={takePhoto}>Test</button>
       <br />
       {/* {photo && (
         <Image
