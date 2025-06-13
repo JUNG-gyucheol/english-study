@@ -13,7 +13,6 @@ export async function POST(req: Request) {
       },
     }))
 
-    console.log(imagesData)
     const response = await client.chat.completions.create({
       model: 'gpt-4.1-mini',
       messages: [
@@ -51,7 +50,7 @@ export async function POST(req: Request) {
       ],
     })
     const parsedData = JSON.parse(response.choices[0].message.content as string)
-    console.log(parsedData)
+
     res = { ...res, ...parsedData }
 
     return NextResponse.json(res)
