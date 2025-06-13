@@ -1,5 +1,6 @@
 'use client'
 
+import FileUpload from '@/components/fileupload'
 import { supabase } from '@/lib/supabase'
 import { useRef, useState } from 'react'
 
@@ -133,6 +134,7 @@ export default function Home() {
           ))}
         </div>
       )}
+      <FileUpload />
     </div>
   )
 }
