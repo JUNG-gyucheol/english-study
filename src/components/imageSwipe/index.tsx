@@ -4,6 +4,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import { Autoplay, Pagination, Keyboard, Mousewheel } from 'swiper/modules'
+import { IoCloseOutline } from 'react-icons/io5'
 
 const ImageSwipe: React.FC<{
   files: File[]
@@ -11,10 +12,8 @@ const ImageSwipe: React.FC<{
   removeFile: (index: number) => void
 }> = ({ files, previews, removeFile }) => {
   return (
-    <div className="mt-6">
-      <h3 className="mb-4 text-lg font-semibold">
-        선택된 파일 ({files.length}개)
-      </h3>
+    <div className="">
+      <h3 className="mb-2 text-lg font-semibold">Preview ({files.length}개)</h3>
       <Swiper
         modules={[Autoplay, Keyboard, Mousewheel, Pagination]}
         direction="horizontal"
@@ -38,8 +37,8 @@ const ImageSwipe: React.FC<{
                 />
                 <button
                   onClick={() => removeFile(index)}
-                  className="absolute top-2 right-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600">
-                  ×
+                  className="bg-orange-1 absolute top-2 right-2 flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-full text-white transition-all duration-300 hover:opacity-80">
+                  <IoCloseOutline className="text-[20px] text-white" />
                 </button>
               </div>
             </div>
