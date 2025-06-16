@@ -76,3 +76,33 @@ body {
     margin-bottom: 0;
   }
 }
+
+.react-calendar {
+  background-color: #000000 !important;
+  border-radius: 10px !important;
+}
+
+.react-calendar {
+  button:hover {
+    background-color: #696969 !important;
+    border-radius: 10px !important;
+  }
+}
+
+.react-calendar__navigation {
+  button {
+    background-color: #000000 !important;
+    border-radius: 10px !important;
+  }
+}
+
+.react-calendar__tile--active {
+  background-color: #8a8a8a !important;
+  border-radius: 10px !important;
+}
+
+.react-calendar__tile--now {
+  background-color: #ffffff !important;
+  border-radius: 10px !important;
+  color: #000000 !important;
+}

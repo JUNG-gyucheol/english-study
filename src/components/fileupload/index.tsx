@@ -7,6 +7,9 @@ import { supabase } from '@/lib/supabase'
 import dayjs from 'dayjs'
 import { AiOutlinePicture } from 'react-icons/ai'
 import { useRouter } from 'next/navigation'
+import Calendar from 'react-calendar'
+import { FaRegCalendarAlt } from 'react-icons/fa'
+import 'react-calendar/dist/Calendar.css'
 
 const FileUpload = () => {
   const [files, setFiles] = useState<File[]>([])
@@ -16,6 +19,8 @@ const FileUpload = () => {
   const [isDragOver, setIsDragOver] = useState(false)
   const [toastList, setToastList] = useAtom(toastListAtom)
   const [title, setTitle] = useState('')
+  const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'))
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const router = useRouter()
   // 파일 유효성 검사
   const validateFile = (file: File): boolean => {
@@ -154,8 +159,7 @@ const FileUpload = () => {
       const { data } = await supabase
         .from('words')
         .select('*')
-        .lte('updated_at', dayjs().toISOString())
-        .gte('updated_at', dayjs(dayjs().format('YYYY-MM-DD')).toISOString())
+        .eq('date', dayjs(date).unix())
         .limit(1)
         .single<{ words: string; id: number }>()
 
@@ -165,7 +169,6 @@ const FileUpload = () => {
           .from('words')
           .update({
             words: JSON.stringify(wordsData),
-            updated_at: dayjs().toISOString(),
             title: title || dayjs().format('YYYY-MM-DD'),
           })
           .eq('id', data.id)
@@ -173,6 +176,7 @@ const FileUpload = () => {
         await supabase.from('words').insert({
           words: JSON.stringify(words),
           title: title || dayjs().format('YYYY-MM-DD'),
+          date: dayjs(date).unix(),
         })
       }
       setToastList([
@@ -206,6 +210,30 @@ const FileUpload = () => {
           placeholder={`${dayjs().format('YYYY-MM-DD')}`}
           onChange={(e) => setTitle(e.target.value)}
         />
+      </div>
+      <div className="flex flex-col gap-[4px]">
+        <span className="text-[20px] font-semibold">Date</span>
+        <div className="relative">
+          <span
+            className="flex cursor-pointer items-center gap-[4px]"
+            onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
+            <FaRegCalendarAlt className="text-[16px]" />
+            {date}
+          </span>
+          {isCalendarOpen && (
+            <Calendar
+              className="absolute z-10"
+              onChange={(value) => {
+                const date = value?.toString()
+                if (date) {
+                  setTitle(dayjs(date).format('YYYY-MM-DD'))
+                  setDate(dayjs(date).format('YYYY-MM-DD'))
+                }
+                setIsCalendarOpen(false)
+              }}
+            />
+          )}
+        </div>
       </div>
       {/* 드래그 앤 드롭 영역 */}
       <div className="flex flex-col gap-[4px]">

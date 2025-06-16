@@ -12,6 +12,7 @@ const WordsList = () => {
       title: string
       updated_at: string
       words: string
+      date: number
     }[]
   >([])
   const { data } = useQuery({
@@ -38,24 +39,26 @@ const WordsList = () => {
           +
         </Link>
       </div>
-      {list.map((item) => {
-        return (
-          <div
-            key={item.id}
-            className="border-gray-3 bg-white-1 rounded-[10px] border">
-            <Link href={`/words/${item.id}`}>
-              <div className="p-[10px]">
-                <div className="flex flex-col justify-center">
-                  <span className="text-[20px] text-black">{item.title}</span>
-                  <span className="text-gray-2 text-[14px] font-semibold">
-                    {dayjs(item.created_at).format('YYYY-MM-DD')}
-                  </span>
+      <div className="flex flex-col gap-[10px]">
+        {list.map((item) => {
+          return (
+            <div
+              key={item.id}
+              className="border-gray-3 bg-white-1 rounded-[10px] border">
+              <Link href={`/words/${item.id}`}>
+                <div className="p-[10px]">
+                  <div className="flex flex-col justify-center">
+                    <span className="text-[20px] text-black">{item.title}</span>
+                    <span className="text-gray-2 text-[14px] font-semibold">
+                      {dayjs.unix(item.date).format('YYYY-MM-DD')}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </div>
-        )
-      })}
+              </Link>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
