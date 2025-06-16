@@ -101,39 +101,3 @@ yarn dev
 | ------------------------------- | --------------------- |
 | `NEXT_PUBLIC_SUPABASE_URL`      | Supabase 프로젝트 URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 익명 키      |
-
-## 📁 프로젝트 구조
-
-```
-src/
-├── app/                 # Next.js 14 App Router
-├── components/          # React 컴포넌트
-│   ├── fileupload/     # 파일 업로드 컴포넌트
-│   └── imageSwipe/     # 이미지 스와이프 컴포넌트
-├── lib/                # 유틸리티 함수
-│   └── supabase.ts     # Supabase 클라이언트
-└── store/              # 상태 관리
-    └── toastStore.ts   # 토스트 알림 상태
-```
-
-## 🤝 기여하기
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
-
-## 👥 작성자
-
-- Your Name - Initial work
-
-## 🙏 감사의 말
-
-- [Next.js](https://nextjs.org/)
-- [Supabase](https://supabase.io/)
-- [Tailwind CSS](https://tailwindcss.com/)
