@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 이미지 단어 추출기 (Image Word Extractor)
 
-## Getting Started
+이미지에서 단어를 추출하고 관리하는 웹 애플리케이션입니다. 카메라로 찍거나 이미지를 업로드하여 단어를 추출하고 저장할 수 있습니다.
 
-First, run the development server:
+## ✨ 주요 기능
+
+- **이미지 업로드**
+
+  - 드래그 앤 드롭 지원
+  - 다중 파일 선택
+  - 이미지 미리보기
+  - 파일 크기 및 형식 검증
+
+- **단어 추출**
+
+  - 이미지에서 단어 자동 인식
+  - 추출된 단어 목록 표시
+  - 단어 저장 및 관리
+
+- **반응형 디자인**
+  - 모바일, 태블릿, 데스크톱 지원
+  - 직관적인 사용자 인터페이스
+
+## 🚀 시작하기
+
+### 필수 조건
+
+- Node.js 18.0.0 이상
+- npm 또는 yarn
+- Supabase 계정
+
+### 설치
+
+1. 저장소 클론
+
+```bash
+git clone [repository-url]
+cd [project-directory]
+```
+
+2. 의존성 설치
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. 환경 변수 설정
+   `.env.local` 파일을 생성하고 다음 변수들을 설정합니다:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+4. 개발 서버 실행
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ 기술 스택
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **프론트엔드**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+  - Next.js 14
+  - React
+  - TypeScript
+  - Tailwind CSS
+  - Jotai (상태 관리)
 
-## Learn More
+- **백엔드**
+  - Supabase
+    - Storage (이미지 저장)
+    - Database (단어 데이터 저장)
 
-To learn more about Next.js, take a look at the following resources:
+## 📝 사용 방법
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **이미지 업로드**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   - 드래그 앤 드롭으로 이미지 파일을 업로드하거나
+   - "파일 선택" 버튼을 클릭하여 이미지 선택
 
-## Deploy on Vercel
+2. **단어 추출**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   - 업로드된 이미지에서 "단어" 버튼 클릭
+   - 추출된 단어 목록 확인
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **단어 저장**
+   - "SAVE" 버튼을 클릭하여 추출된 단어 저장
+   - 저장된 단어는 Supabase 데이터베이스에 저장됨
+
+## 🔧 환경 변수
+
+프로젝트를 실행하기 위해 필요한 환경 변수들:
+
+| 변수                            | 설명                  |
+| ------------------------------- | --------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase 프로젝트 URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 익명 키      |
+
+## 📁 프로젝트 구조
+
+```
+src/
+├── app/                 # Next.js 14 App Router
+├── components/          # React 컴포넌트
+│   ├── fileupload/     # 파일 업로드 컴포넌트
+│   └── imageSwipe/     # 이미지 스와이프 컴포넌트
+├── lib/                # 유틸리티 함수
+│   └── supabase.ts     # Supabase 클라이언트
+└── store/              # 상태 관리
+    └── toastStore.ts   # 토스트 알림 상태
+```
+
+## 🤝 기여하기
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 라이선스
+
+이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
+
+## 👥 작성자
+
+- Your Name - Initial work
+
+## 🙏 감사의 말
+
+- [Next.js](https://nextjs.org/)
+- [Supabase](https://supabase.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
