@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -13,18 +14,19 @@ const WordsList = () => {
       words: string
     }[]
   >([])
+  const { data } = useQuery({
+    queryKey: ['words'],
+    queryFn: async () => {
+      const { data } = await supabase.from('words').select('*')
+      return data
+    },
+  })
 
   useEffect(() => {
-    const getWords = async () => {
-      const { data } = await supabase.from('words').select('*')
-
-      console.log(data)
-      if (data) {
-        setList(data)
-      }
+    if (data) {
+      setList(data)
     }
-    getWords()
-  }, [])
+  }, [data])
 
   return (
     <div>
@@ -52,24 +54,6 @@ const WordsList = () => {
               </div>
             </Link>
           </div>
-          //   <div
-          //     key={item.id}
-          //     className="border-gray-3 bg-white-1 rounded-[10px] border p-[10px]">
-          //     <Link
-          //       href={`/words/${item.id}`}
-          //       className="w-full cursor-pointer p-[10px]">
-          //       <div className="flex flex-col">
-          //         <div>
-          //           <span className="text-[20px] text-black">{item.title}</span>
-          //         </div>
-          //         <div>
-          //           <span className="text-gray-2 text-[14px] font-semibold">
-          //             {dayjs(item.created_at).format('YYYY-MM-DD')}
-          //           </span>
-          //         </div>
-          //       </div>
-          //     </Link>
-          //   </div>
         )
       })}
     </div>

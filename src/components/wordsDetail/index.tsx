@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -8,19 +9,23 @@ const WordsDetail = () => {
   const [words, setWords] = useState<{ [key: string]: string }>()
   const [enVisible, setEnVisible] = useState(true)
   const [koVisible, setKoVisible] = useState(true)
-
-  useEffect(() => {
-    const getWords = async () => {
+  const { data } = useQuery({
+    queryKey: ['words', id],
+    queryFn: async () => {
       const { data } = await supabase
         .from('words')
         .select('*')
         .eq('id', id)
         .single()
+      return data
+    },
+  })
 
+  useEffect(() => {
+    if (data) {
       setWords(JSON.parse(data.words))
     }
-    getWords()
-  }, [id])
+  }, [data])
 
   return (
     <div className="flex flex-col gap-[14px]">
