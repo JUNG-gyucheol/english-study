@@ -268,14 +268,14 @@ const FileUpload = () => {
         <h3 className="mb-4 text-[20px] font-semibold">Words</h3>
         {words ? (
           Array.from({
-            length: Math.ceil(Object.entries(words).length / 3),
+            length: Math.ceil(Object.entries(words).length / 2),
           }).map((_, rowIndex) => {
             return (
               <div className="mb-[4px] flex gap-[4px]" key={`row-${rowIndex}`}>
-                {Array.from({ length: 3 }).map((_, colIndex) => {
+                {Array.from({ length: 2 }).map((_, colIndex) => {
                   try {
                     const [key, value] =
-                      Object.entries(words)[rowIndex * 3 + colIndex]
+                      Object.entries(words)[rowIndex * 2 + colIndex]
                     return (
                       <div
                         key={`col-${colIndex + rowIndex}`}
@@ -301,10 +301,12 @@ const FileUpload = () => {
         )}
       </div>
 
-      <div
-        onClick={() => handleSave()}
-        className="absolute bottom-0 left-[50%] w-full max-w-[480px] -translate-x-1/2 cursor-pointer rounded-[10px] bg-[#4e73df] py-[6px] text-center text-[16px] font-semibold text-white transition-all duration-300 hover:bg-[#2e59d9]">
-        <span className="font-merriweather text-white-1">SAVE</span>
+      <div className="absolute bottom-[30px] left-[50%] w-full -translate-x-1/2 px-[14px]">
+        <div
+          onClick={() => handleSave()}
+          className="w-full cursor-pointer rounded-[10px] bg-[#4e73df] py-[10px] text-center text-[16px] font-semibold text-white transition-all duration-300 hover:bg-[#2e59d9]">
+          <span className="font-merriweather text-white-1">SAVE</span>
+        </div>
       </div>
     </div>
   )

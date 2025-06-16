@@ -52,7 +52,7 @@ const WordsDetail = () => {
           return (
             <div
               key={key}
-              className="border-gray-3 flex justify-between border-b pb-[6px]">
+              className="border-gray-3 flex justify-between gap-[10px] border-b pb-[6px]">
               <span
                 className={`${enVisible ? 'opacity-100' : 'opacity-0'} text-[20px]`}>
                 {key}
