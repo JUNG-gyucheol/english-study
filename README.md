@@ -66,11 +66,11 @@ yarn dev
 
 - **프론트엔드**
 
-  - Next.js 14
-  - React
+  - Next.js 15
   - TypeScript
   - Tailwind CSS
   - Jotai (상태 관리)
+  - tanstack-query
 
 - **백엔드**
   - Supabase
