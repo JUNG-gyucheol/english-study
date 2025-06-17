@@ -1,11 +1,11 @@
 import { supabase } from '@/lib/supabase'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const WordsDetail = () => {
   const { id } = useParams()
-
+  const router = useRouter()
   const [words, setWords] = useState<{ [key: string]: string }>()
   const [enVisible, setEnVisible] = useState(true)
   const [koVisible, setKoVisible] = useState(true)
@@ -26,6 +26,16 @@ const WordsDetail = () => {
       setWords(JSON.parse(data.words))
     }
   }, [data])
+
+  const handleRemove = () => {
+    supabase
+      .from('words')
+      .delete()
+      .eq('id', id)
+      .then(() => {
+        router.push('/')
+      })
+  }
 
   return (
     <div className="flex flex-col gap-[14px]">
@@ -64,6 +74,13 @@ const WordsDetail = () => {
             </div>
           )
         })}
+      <div className="absolute bottom-[30px] left-[50%] w-full -translate-x-1/2 px-[14px]">
+        <div
+          onClick={() => handleRemove()}
+          className="w-full cursor-pointer rounded-[10px] bg-[#4e73df] py-[10px] text-center text-[16px] font-semibold text-white transition-all duration-300 hover:bg-[#2e59d9]">
+          <span className="font-merriweather text-white-1">REMOVE</span>
+        </div>
+      </div>
     </div>
   )
 }
